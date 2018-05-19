@@ -33,6 +33,17 @@ namespace seleniumtraining
            
         }
 
+        [Test]
+        public void Login()
+        {
+
+            driver.Navigate().GoToUrl("http://localhost/litecart/admin/login.php");
+            driver.FindElement(By.Name("username")).SendKeys("admin");
+            driver.FindElement(By.Name("password")).SendKeys("admin");
+            driver.FindElement(By.Name("login")).Click();
+
+        }
+
         [TearDown]
 
         public void stop()
