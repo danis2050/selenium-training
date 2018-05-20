@@ -60,6 +60,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MyTests.cs" />
+    <Compile Include="MyTestsFireFox.cs" />
+    <Compile Include="MyTestsIE.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
