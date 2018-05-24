@@ -43,6 +43,40 @@ namespace seleniumtraining
             driver.FindElement(By.Name("login")).Click();
 
         }
+		
+		[Test]
+        public void Menu()
+        {
+
+            driver.Navigate().GoToUrl("http://localhost/litecart/admin/login.php");
+            driver.FindElement(By.Name("username")).SendKeys("admin");
+            driver.FindElement(By.Name("password")).SendKeys("admin");
+            driver.FindElement(By.Name("login")).Click();
+                     
+            IList<IWebElement> Elements = driver.FindElements(By.XPath("//ul[@id='box-apps-menu']/li"));
+
+            for(int i=1; i<= Elements.Count; i++ )
+            {
+                string xp = "//ul[@id='box-apps-menu']/li[" + i + "]";
+                driver.FindElement(By.XPath(xp)).Click();
+
+                Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(driver.FindElement(By.CssSelector("h1")).Enabled);
+               
+
+                IList<IWebElement> ElementsInto = driver.FindElements(By.XPath(xp + "/ul/li"));
+
+                for (int n = 1; n <= ElementsInto.Count; n++)
+                {
+                    string xpinto = xp + "/ul/li[" + n + "]";
+                    driver.FindElement(By.XPath(xpinto)).Click();
+                    Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(driver.FindElement(By.CssSelector("h1")).Enabled);
+
+                }
+            }
+
+           
+
+        }
 
         [TearDown]
 
