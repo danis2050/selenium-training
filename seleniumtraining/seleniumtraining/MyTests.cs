@@ -77,6 +77,25 @@ namespace seleniumtraining
            
 
         }
+		
+		[Test]
+        public void Stickers()
+        {
+
+            driver.Navigate().GoToUrl("http://localhost/litecart");
+            
+            IList<IWebElement> PopularElements = driver.FindElements(By.XPath("//div[@id='box-most-popular']/div/ul/li"));
+
+            for (int i = 1; i <= PopularElements.Count; i++)
+            {
+                string xp = "//div[@id='box-most-popular']/div/ul/li[" + i + "]/a/div/div";
+                IList<IWebElement> Stickers = driver.FindElements(By.XPath(xp));
+                Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(1, Stickers.Count);
+            }
+
+          
+        }
+
 
         [TearDown]
 
