@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support;
@@ -83,15 +84,29 @@ namespace seleniumtraining
         {
 
             driver.Navigate().GoToUrl("http://localhost/litecart");
-            
-            IList<IWebElement> PopularElements = driver.FindElements(By.XPath("//div[@id='box-most-popular']/div/ul/li"));
 
-            for (int i = 1; i <= PopularElements.Count; i++)
+            string[] Locators = { "//div[@id='box-most-popular']", "//div[@id='box-campaigns']", "//div[@id='box-latest-products']" };
+
+            int z = 0;
+
+            for (int j = 0; j <= 2; j++)
             {
-                string xp = "//div[@id='box-most-popular']/div/ul/li[" + i + "]/a/div/div";
-                IList<IWebElement> Stickers = driver.FindElements(By.XPath(xp));
-                Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(1, Stickers.Count);
+
+                
+                IList<IWebElement> PopularElements = driver.FindElements(By.XPath(Locators[j] +"/div/ul/li"));
+
+                for (int i = 1; i <= PopularElements.Count; i++)
+                {
+                    string xp = Locators[j] + "/div/ul/li[" + i + "]/a/div/div";
+                    IList<IWebElement> Stickers = driver.FindElements(By.XPath(xp));
+                    Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(1, Stickers.Count);
+
+                    z = z + 1;
+                }
+
             }
+
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(11, z);
 
           
         }
