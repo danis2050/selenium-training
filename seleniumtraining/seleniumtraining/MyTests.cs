@@ -112,6 +112,27 @@ namespace seleniumtraining
         }
 
 
+        [Test]
+        public void Countries()
+        {
+
+            driver.Navigate().GoToUrl("http://localhost/litecart/admin/login.php");
+            driver.FindElement(By.Name("username")).SendKeys("admin");
+            driver.FindElement(By.Name("password")).SendKeys("admin");
+            driver.FindElement(By.Name("login")).Click();
+
+            IList<IWebElement> Elements = driver.FindElements(By.XPath("//table[@class='dataTable']/tbody/tr[@class='row']/td[5]/a"));
+            List<string> Lt = new List<string>();
+
+            foreach(IWebElement Element in Elements)
+            {
+                string t = Element.Text;
+                Lt.Add(t);
+            }
+
+        }
+
+
         [TearDown]
 
         public void stop()
