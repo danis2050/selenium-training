@@ -111,6 +111,21 @@ namespace seleniumtraining
           
         }
 
+        [Test]
+        public void StickersNew()
+        {
+            driver.Navigate().GoToUrl("http://localhost/litecart");
+
+            IList<IWebElement> Elements = driver.FindElements(By.CssSelector("div.image-wrapper"));
+
+            foreach (IWebElement Element in Elements)
+            {
+                IList<IWebElement> Stickers = Element.FindElements(By.CssSelector("div"));
+                Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(1, Stickers.Count);
+            }
+
+        }
+
 
         [Test]
         public void Countries()
