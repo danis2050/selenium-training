@@ -135,14 +135,26 @@ namespace seleniumtraining
             driver.FindElement(By.Name("username")).SendKeys("admin");
             driver.FindElement(By.Name("password")).SendKeys("admin");
             driver.FindElement(By.Name("login")).Click();
+            driver.Navigate().GoToUrl("http://localhost/litecart/admin/?app=countries&doc=countries");
 
-            IList<IWebElement> Elements = driver.FindElements(By.XPath("//table[@class='dataTable']/tbody/tr[@class='row']/td[5]/a"));
-            List<string> Lt = new List<string>();
-
-            foreach(IWebElement Element in Elements)
+            //IList<IWebElement> Elements = driver.FindElements(By.XPath("//table[@class='dataTable']/tbody/tr[@class='row']/td[5]/a"));
+            IList<IWebElement> Elements = driver.FindElements(By.XPath("//table[@class='dataTable']/tbody/tr[@class='row']"));
+            List<string> Lt1 = new List<string>();
+            List<string> Lt2 = new List<string>();
+            StreamWriter sw = new StreamWriter("C:\\Countries.txt");
+            foreach (IWebElement Element in Elements)
             {
-                string t = Element.Text;
-                Lt.Add(t);
+                string t = Element.FindElement(By.XPath(".//td[5]/a")).GetAttribute("text");
+                Lt1.Add(t);
+                Lt2.Add(t);
+                sw.WriteLine(t);
+            }
+            sw.Close();
+            Lt2.Sort();
+
+            for (int i = 0; i < Lt1.Count; i++)
+            {
+                Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(Lt1[i], Lt2[i]);
             }
 
         }
