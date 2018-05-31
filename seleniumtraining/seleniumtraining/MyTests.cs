@@ -169,8 +169,7 @@ namespace seleniumtraining
             driver.FindElement(By.Name("password")).SendKeys("admin");
             driver.FindElement(By.Name("login")).Click();
             driver.Navigate().GoToUrl("http://localhost/litecart/admin/?app=countries&doc=countries");
-
-            //IList<IWebElement> Elements = driver.FindElements(By.XPath("//table[@class='dataTable']/tbody/tr[@class='row']/td[5]/a"));
+            
             IList<IWebElement> Elements = driver.FindElements(By.XPath("//table[@class='dataTable']/tbody/tr[@class='row']"));
             List<string> Lt1 = new List<string>();
             List<string> Lt2 = new List<string>();
@@ -184,16 +183,11 @@ namespace seleniumtraining
                 Lt1.Add(t);
                 Lt2.Add(t);
                 sw.WriteLine(t);
-
-                /* 
+                
                  if (Convert.ToInt32(Element.FindElement(By.XPath(".//td[6]")).GetAttribute("textContent")) > 0)
                  {
                      LinkZone.Add(Element.FindElement(By.XPath(".//td[5]/a")).GetAttribute("href"));
                  }
-
-                */
-
-
             }
 
             Lt2.Sort();
@@ -208,38 +202,31 @@ namespace seleniumtraining
 
             }
 
-            //Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(2, LinkZone.Count);
-
-            // "//table[@id='table-zones']/tbody/tr/td[3]/input"
-
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(2, LinkZone.Count);
 
             foreach (string link in LinkZone)
             {
-
-
                 driver.Navigate().GoToUrl(link);
                 Thread.Sleep(5000);
                 IList<IWebElement> Elements1 = driver.FindElements(By.XPath("//table[@id='table-zones']/tbody/tr/td[3]/input"));
-
+                
                 foreach (IWebElement Element in Elements1)
                 {
-                    LtZone1.Add(Element.GetCssValue("Value"));
-                    LtZone2.Add(Element.GetCssValue("Value"));
-                }
-
+                    string t1 = Element.GetAttribute("Value");
+                    LtZone1.Add(t1);
+                    LtZone2.Add(t1);
+                    sw.WriteLine(t1);
+                }                                             
             }
 
             sw.Close();
         }
 
-
-
         [TearDown]
-
         public void stop()
         {
-            driver.Quit();
-            driver = null;
+           driver.Quit();
+           driver = null;
         }
     }
 }
