@@ -222,6 +222,67 @@ namespace seleniumtraining
             sw.Close();
         }
 
+        [Test]
+        public void CountriesAndZones()
+        {
+            driver.Navigate().GoToUrl("http://localhost/litecart/admin/login.php");
+            driver.FindElement(By.Name("username")).SendKeys("admin");
+            driver.FindElement(By.Name("password")).SendKeys("admin");
+            driver.FindElement(By.Name("login")).Click();
+            driver.Navigate().GoToUrl("http://localhost/litecart/admin/?app=countries&doc=countries");
+
+            IList<IWebElement> Elements = driver.FindElements(By.XPath("//table[@class='dataTable']/tbody/tr[@class='row']"));
+            List<string> Lt1 = new List<string>();
+            List<string> Lt2 = new List<string>();
+            List<string> LtZone1 = new List<string>();
+            List<string> LtZone2 = new List<string>();
+            List<string> LinkZone = new List<string>();
+            StreamWriter sw = new StreamWriter("C:\\Countries.txt");
+            foreach (IWebElement Element in Elements)
+            {
+                string t = Element.FindElement(By.XPath(".//td[5]/a")).GetAttribute("text");
+                Lt1.Add(t);
+                Lt2.Add(t);
+                sw.WriteLine(t);
+
+                if (Convert.ToInt32(Element.FindElement(By.XPath(".//td[6]")).GetAttribute("textContent")) > 0)
+                {
+                    LinkZone.Add(Element.FindElement(By.XPath(".//td[5]/a")).GetAttribute("href"));
+                }
+            }
+
+            Lt2.Sort();
+
+
+            for (int i = 0; i < Lt1.Count; i++)
+            {
+                if (Lt1[i] != Lt2[i])
+                {
+                    Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail("Страны отличаются");
+                }
+
+            }
+
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(2, LinkZone.Count);
+
+            foreach (string link in LinkZone)
+            {
+                driver.Navigate().GoToUrl(link);
+                Thread.Sleep(5000);
+                IList<IWebElement> Elements1 = driver.FindElements(By.XPath("//table[@id='table-zones']/tbody/tr/td[3]/input"));
+
+                foreach (IWebElement Element in Elements1)
+                {
+                    string t1 = Element.GetAttribute("Value");
+                    LtZone1.Add(t1);
+                    LtZone2.Add(t1);
+                    sw.WriteLine(t1);
+                }
+            }
+
+            sw.Close();
+        }
+
         [TearDown]
         public void stop()
         {
