@@ -309,6 +309,33 @@ namespace seleniumtraining
             driver.FindElement(By.XPath("//ul[@class='list-vertical']/li[4]/a")).Click();
         }
 
+        [Test]
+        public void AddToCart()
+        {
+            driver.Navigate().GoToUrl("http://localhost/litecart");
+            // Зеленая утка. Добавление в корзину 
+            driver.FindElement(By.CssSelector("img.image[alt='Green Duck']")).Click();
+            string quantity = driver.FindElement(By.CssSelector("span.quantity")).GetAttribute("textContent");
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(quantity, "0");           
+            driver.FindElement(By.CssSelector("button[name='add_cart_product']")).Click();
+            wait.Until(d => (d.FindElement(By.CssSelector("span.quantity")).GetAttribute("textContent"))=="1");
+            // Голубая утка. Добавление в корзину  
+            driver.FindElement(By.CssSelector("img.image[alt='Blue Duck']")).Click();
+            driver.FindElement(By.CssSelector("button[name='add_cart_product']")).Click();
+            wait.Until(d => (d.FindElement(By.CssSelector("span.quantity")).GetAttribute("textContent")) == "2");
+            // Фиолетовая утка. Добавление в корзину
+            driver.FindElement(By.CssSelector("img.image[alt='Purple Duck']")).Click();
+            driver.FindElement(By.CssSelector("button[name='add_cart_product']")).Click();
+            wait.Until(d => (d.FindElement(By.CssSelector("span.quantity")).GetAttribute("textContent")) == "3");
+            driver.FindElement(By.CssSelector("div#cart a.image")).Click();
+            //Удаляем уточки
+            driver.FindElement(By.CssSelector("button[name='remove_cart_item']")).Click();
+            wait.Until(d => (d.FindElements(By.CssSelector("td.item")).Count) == 2);
+            driver.FindElement(By.CssSelector("button[name='remove_cart_item']")).Click();
+            wait.Until(d => (d.FindElements(By.CssSelector("td.item")).Count) == 1);
+            driver.FindElement(By.CssSelector("button[name='remove_cart_item']")).Click();          
+        }
+
         [TearDown]
         public void stop()
         {
