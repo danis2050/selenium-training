@@ -310,6 +310,35 @@ namespace seleniumtraining
         }
 
         [Test]
+        public void CreateAccountNew()
+        {
+            driver.Navigate().GoToUrl("http://localhost/litecart/en/create_account");
+            driver.FindElement(By.CssSelector("input[name='firstname']")).SendKeys("Nick1");
+            driver.FindElement(By.CssSelector("input[name='lastname']")).SendKeys("Apple1");
+            driver.FindElement(By.CssSelector("input[name='address1']")).SendKeys("Street 1-5");
+            driver.FindElement(By.CssSelector("input[name='postcode']")).SendKeys("12894");
+            driver.FindElement(By.CssSelector("input[name='city']")).SendKeys("Atlanta");
+            new SelectElement(driver.FindElement(By.CssSelector("select[name='country_code']"))).SelectByText("United States");
+            Thread.Sleep(2000);
+            new SelectElement(driver.FindElement(By.CssSelector("select[name='zone_code']"))).SelectByText("Georgia");
+            Random rand = new Random();
+            string email = "danis" + Convert.ToString(rand.Next(10000000)) + "@gmail.com";
+            driver.FindElement(By.CssSelector("input[name='email']")).SendKeys(email);
+            driver.FindElement(By.CssSelector("input[name='phone']")).SendKeys("+79162001450");
+            driver.FindElement(By.CssSelector("input[name='password']")).SendKeys("12345");
+            driver.FindElement(By.CssSelector("input[name='confirmed_password']")).SendKeys("12345");
+            driver.FindElement(By.CssSelector("button[name='create_account']")).Click();
+            Thread.Sleep(3000);
+            driver.FindElement(By.XPath("//ul[@class='list-vertical']/li[4]/a")).Click();
+            Thread.Sleep(3000);
+            driver.FindElement(By.CssSelector("input[name='email']")).SendKeys(email);
+            driver.FindElement(By.CssSelector("input[name='password']")).SendKeys("12345");
+            driver.FindElement(By.CssSelector("button[name='login']")).Click();
+            Thread.Sleep(3000);
+            driver.FindElement(By.XPath("//ul[@class='list-vertical']/li[4]/a")).Click();
+        }
+
+        [Test]
         public void AddToCart()
         {
             driver.Navigate().GoToUrl("http://localhost/litecart");
@@ -339,8 +368,8 @@ namespace seleniumtraining
         [TearDown]
         public void stop()
         {
-           driver.Quit();
-           driver = null;
+           //driver.Quit();
+           //driver = null;
         }
     }
 }
