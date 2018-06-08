@@ -9,6 +9,7 @@ using OpenQA;
 using OpenQA.Selenium.Chrome;
 using NUnit.Framework;
 using System.Threading;
+using System.Linq;
 
 
 namespace seleniumtraining
@@ -365,7 +366,42 @@ namespace seleniumtraining
             driver.FindElement(By.CssSelector("button[name='remove_cart_item']")).Click();          
         }
 
-        [TearDown]
+		[Test]
+		public void OpenWindows()
+		{
+			driver.Navigate().GoToUrl("http://localhost/litecart/admin/login.php");
+			driver.FindElement(By.Name("username")).SendKeys("admin");
+			driver.FindElement(By.Name("password")).SendKeys("admin");
+			driver.FindElement(By.Name("login")).Click();
+			driver.Navigate().GoToUrl("http://localhost/litecart/admin/?app=countries&doc=countries");
+			// открываем первую страну - Афганистан
+			driver.FindElement(By.CssSelector("tr.row a")).Click();
+			// находим элементы, на которые будем кликать 
+			ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("tbody>tr>td>a[target='_blank']"));
+
+			string mainWindow = driver.CurrentWindowHandle;
+			ICollection<string> oldWindows = driver.WindowHandles;
+			foreach (IWebElement element in elements)
+			{
+				element.Click();
+				// ожидание в течение 10 секунд появление нового окна. у нас есть уже одно открытое окно, поэтому ждем второе окно
+				wait.Until(d => (d.WindowHandles.Count > 1));
+				ICollection<string> newdWindows = driver.WindowHandles;
+				// находим разность двух коллекций
+				IEnumerable<string> diff = newdWindows.Except(oldWindows);
+				// получаем handler нового окна
+				string newWindow = diff.ToList()[0];
+				driver.SwitchTo().Window(newWindow);
+				// окна открываются и закрываются быстро, поэтому я ввел эту паузу, чтобы визуально было видно, что тест отрабатывает, открывает и закрывает окна 
+				Thread.Sleep(2000);
+				driver.Close();
+				driver.SwitchTo().Window(mainWindow);
+
+			}
+		}
+
+
+		[TearDown]
         public void stop()
         {
            //driver.Quit();
