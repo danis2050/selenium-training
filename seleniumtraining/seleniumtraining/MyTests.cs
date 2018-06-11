@@ -400,6 +400,62 @@ namespace seleniumtraining
 			}
 		}
 
+        [Test]
+        public void GeoZones()
+        {
+            driver.Navigate().GoToUrl("http://localhost/litecart/admin/login.php");
+            driver.FindElement(By.Name("username")).SendKeys("admin");
+            driver.FindElement(By.Name("password")).SendKeys("admin");
+            driver.FindElement(By.Name("login")).Click();
+            // Канада
+            driver.Navigate().GoToUrl("http://localhost/litecart/admin/?app=geo_zones&doc=geo_zones");
+            driver.FindElement(By.XPath("//a[contains(text(),'Canada')]")).Click();
+            IList<IWebElement> elements = driver.FindElements(By.XPath("//table[@id='table-zones']/tbody/tr/td[3]/select/option[@selected='selected']"));
+            List<string> Lt1 = new List<string>();
+            List<string> Lt2 = new List<string>();
+            StreamWriter sw = new StreamWriter("C:\\Zones.txt");
+            foreach (IWebElement element in elements)
+            {
+                string t = element.GetAttribute("text");
+                Lt1.Add(t);
+                Lt2.Add(t);
+                sw.WriteLine(t);
+            }
+            Lt2.Sort();
+            for (int i = 0; i < Lt1.Count; i++)
+            {
+                if (Lt1[i] != Lt2[i])
+                {
+                    Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail("Список зон для Канады неупорядочен");
+                }
+            }
+            sw.Close();
+
+            // США
+            driver.Navigate().GoToUrl("http://localhost/litecart/admin/?app=geo_zones&doc=geo_zones");
+            driver.FindElement(By.XPath("//a[contains(text(),'United States of America')]")).Click();
+            IList<IWebElement> elements1 = driver.FindElements(By.XPath("//table[@id='table-zones']/tbody/tr/td[3]/select/option[@selected='selected']"));
+            List<string> Lt3 = new List<string>();
+            List<string> Lt4 = new List<string>();
+            StreamWriter sw1 = new StreamWriter("C:\\Zones1.txt");
+            foreach (IWebElement element in elements1)
+            {
+                string t = element.GetAttribute("textContent");
+                Lt3.Add(t);
+                Lt4.Add(t);
+                sw1.WriteLine(t);
+            }
+            Lt4.Sort();
+            for (int i = 0; i < Lt3.Count; i++)
+            {
+                if (Lt3[i] != Lt4[i])
+                {
+                    Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail("Список зон для США неупорядочен");
+                }
+            }
+            sw1.Close();
+        }
+
 
 		[TearDown]
         public void stop()
