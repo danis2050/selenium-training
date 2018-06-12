@@ -59,6 +59,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MyTestEvents.cs" />
     <Compile Include="MyTests.cs" />
     <Compile Include="MyTestsFireFox.cs" />
     <Compile Include="MyTestsIE.cs" />
