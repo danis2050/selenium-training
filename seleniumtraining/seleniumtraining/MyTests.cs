@@ -456,6 +456,31 @@ namespace seleniumtraining
             sw1.Close();
         }
 
+        [Test]
+        public void WebBrowserLogs()
+        {
+            driver.Navigate().GoToUrl("http://localhost/litecart/admin/login.php");
+            driver.FindElement(By.Name("username")).SendKeys("admin");
+            driver.FindElement(By.Name("password")).SendKeys("admin");
+            driver.FindElement(By.Name("login")).Click();
+            driver.Navigate().GoToUrl("http://localhost/litecart/admin/?app=catalog&doc=catalog&category_id=1");
+            IList<IWebElement> elements = driver.FindElements(By.XPath("//a[contains(text(),'Duck')]"));
+
+            for (int i = 1; i < elements.Count; i++)
+            {
+                IList<IWebElement> newelements = driver.FindElements(By.XPath("//a[contains(text(),'Duck')]"));
+                newelements[i].Click();
+                wait.Until(d => (d.FindElement(By.CssSelector("i.fa.fa-th.fa-stack-1x.icon"))));
+                foreach (LogEntry l in driver.Manage().Logs.GetLog("browser"))
+                {
+                    Console.WriteLine(l);
+                }
+                driver.Navigate().Back();
+                wait.Until(d => (d.FindElement(By.CssSelector("i.fa.fa-th.fa-stack-1x.icon"))));
+
+            }
+        }
+
 
 		[TearDown]
         public void stop()
