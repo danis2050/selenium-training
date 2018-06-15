@@ -471,16 +471,21 @@ namespace seleniumtraining
                 IList<IWebElement> newelements = driver.FindElements(By.XPath("//a[contains(text(),'Duck')]"));
                 newelements[i].Click();
                 wait.Until(d => (d.FindElement(By.CssSelector("i.fa.fa-th.fa-stack-1x.icon"))));
+                int j = 0;
                 foreach (LogEntry l in driver.Manage().Logs.GetLog("browser"))
                 {
                     Console.WriteLine(l);
+                    j = j + 1;
+                }
+                if (j > 0)
+                {
+                    Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail("Есть логи браузера");
                 }
                 driver.Navigate().Back();
                 wait.Until(d => (d.FindElement(By.CssSelector("i.fa.fa-th.fa-stack-1x.icon"))));
 
             }
         }
-
 
 		[TearDown]
         public void stop()
