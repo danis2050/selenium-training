@@ -10,6 +10,7 @@ using OpenQA.Selenium.Chrome;
 using NUnit.Framework;
 using System.Threading;
 using System.Linq;
+using System.Globalization;
 
 
 namespace seleniumtraining
@@ -486,6 +487,141 @@ namespace seleniumtraining
 
             }
         }
+
+        [Test]
+        public void ProductPage()
+        {
+            driver.Navigate().GoToUrl("http://localhost/litecart");
+            string name;
+            string regular_price;
+            string regular_price_color;
+            string regular_price_font_size;
+            string campaign_price;
+            string campaign_price_color;
+            string campaign_price_font_size;
+            name = driver.FindElement(By.CssSelector("div#box-campaigns>div>ul>li>a>div.name")).Text;
+            //тег s - браузеры отображают такой текст как перечеркнутый. Если по такому локатору текст находится, то данный текст присутствует и 
+            // в браузере он отображается перечеркнутым 
+            regular_price = driver.FindElement(By.CssSelector("div#box-campaigns>div>ul>li>a>div>s.regular-price")).Text;
+            regular_price_color = driver.FindElement(By.CssSelector("div#box-campaigns>div>ul>li>a>div>s.regular-price")).GetCssValue("color");
+            regular_price_font_size = driver.FindElement(By.CssSelector("div#box-campaigns>div>ul>li>a>div>s.regular-price")).GetCssValue("font-size");
+            // тег strong - текст отображается жирным. Если по такому локатору текст находится, то данный текст в браузере отображается жирным 
+            campaign_price = driver.FindElement(By.CssSelector("div#box-campaigns>div>ul>li>a>div>strong.campaign-price")).Text;
+            campaign_price_color = driver.FindElement(By.CssSelector("div#box-campaigns>div>ul>li>a>div>strong.campaign-price")).GetCssValue("color");
+            campaign_price_font_size = driver.FindElement(By.CssSelector("div#box-campaigns>div>ul>li>a>div>strong.campaign-price")).GetCssValue("font-size");
+            Console.WriteLine(name);
+            Console.WriteLine(regular_price);
+            Console.WriteLine(regular_price_color);
+            Console.WriteLine(regular_price_font_size);
+            string font_size_regular = regular_price_font_size.Substring(0, regular_price_font_size.Length - 2);
+            Console.WriteLine(regular_price_font_size.Substring(0, regular_price_font_size.Length - 2));
+            Console.WriteLine(campaign_price);
+            Console.WriteLine(campaign_price_color);
+            Console.WriteLine(campaign_price_font_size);
+            Console.WriteLine(campaign_price_font_size.Substring(0, campaign_price_font_size.Length - 2));
+            string font_size_campaign = campaign_price_font_size.Substring(0, campaign_price_font_size.Length - 2);
+            Console.WriteLine(font_size_regular);
+            Console.WriteLine(font_size_campaign);
+            Console.WriteLine(campaign_price_color.Substring(5, campaign_price_color.Length-9));
+
+            int[] RGB1 = RGBtoINT(regular_price_color);
+            
+            if (RGB1[0]!=RGB1[1] & RGB1[1]!=RGB1[2])
+            {
+                // проверка цвета обычной цены на основной странице 
+                Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail("Цвет не является серым");
+            }
+
+            int[] RGB2 = RGBtoINT(campaign_price_color);
+            {
+                if(RGB2[0]==0 | RGB2[1]!=0 | RGB2[2]!=0)
+                {
+                    // проверка цвета аукционной цены на основной странице
+                    Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail("Цвет не является красным");
+                }
+            }
+            NumberFormatInfo provider = new NumberFormatInfo();
+            provider.NumberDecimalSeparator = ".";            
+
+            double font_size_regular_double = Convert.ToDouble(font_size_regular, provider);
+            double font_size_campaign_double = Convert.ToDouble(font_size_campaign, provider);
+            
+            if(font_size_regular_double > font_size_campaign_double)
+            {
+                // проверка того, что размер шрифта аукционной цены больше размера шрифта обычной цены на основной странице
+                Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail("Шрифт меньше, а должен быть больше");
+            }
+
+            driver.FindElement(By.CssSelector("#box-campaigns img.image")).Click();
+            string name_pp;
+            string regular_price_pp;
+            string regular_price_color_pp;
+            string regular_price_font_size_pp;
+            string campaign_price_pp;
+            string campaign_price_color_pp;
+            string campaign_price_font_size_pp;
+
+            name_pp = driver.FindElement(By.CssSelector("#box-product div h1.title")).Text;
+            // проверка совпадения имен товара
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(name, name_pp);
+            regular_price_pp = driver.FindElement(By.CssSelector("#box-product s.regular-price")).Text;
+            // проверка совпадения обычных цен 
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(regular_price, regular_price_pp);
+            campaign_price_pp = driver.FindElement(By.CssSelector("#box-product strong.campaign-price")).Text;
+            // проверка совпадения аукционных  цен 
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(campaign_price, campaign_price_pp);
+            regular_price_color_pp = driver.FindElement(By.CssSelector("#box-product s.regular-price")).GetCssValue("color");
+            regular_price_font_size_pp = driver.FindElement(By.CssSelector("#box-product s.regular-price")).GetCssValue("font-size");
+            campaign_price_color_pp = driver.FindElement(By.CssSelector("#box-product strong.campaign-price")).GetCssValue("color");
+            campaign_price_font_size_pp = driver.FindElement(By.CssSelector("#box-product strong.campaign-price")).GetCssValue("font-size");
+
+            string font_size_regular_pp = regular_price_font_size.Substring(0, regular_price_font_size_pp.Length - 2);
+            string font_size_campaign_pp = campaign_price_font_size.Substring(0, campaign_price_font_size_pp.Length - 2);
+
+            int[] RGB11 = RGBtoINT(regular_price_color_pp);
+
+            if (RGB11[0] != RGB11[1] & RGB11[1] != RGB11[2])
+            {
+                // проверка цвета обычной цены на странице товара 
+                Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail("Цвет не является серым");
+            }
+
+            int[] RGB22 = RGBtoINT(campaign_price_color_pp);
+            {
+                if (RGB22[0] == 0 | RGB22[1] != 0 | RGB22[2] != 0)
+                {
+                    // проверка цвета аукционной цены на странице товара
+                    Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail("Цвет не является красным");
+                }
+            }
+
+            NumberFormatInfo provider1 = new NumberFormatInfo();
+            provider1.NumberDecimalSeparator = ".";
+
+            double font_size_regular_double_pp = Convert.ToDouble(font_size_regular_pp, provider1);
+            double font_size_campaign_double_pp = Convert.ToDouble(font_size_campaign_pp, provider1);
+
+            if (font_size_regular_double_pp > font_size_campaign_double_pp)
+            {
+                // проверка того, что размер шрифта аукционной цены больше размера шрифта обычной цены на основной странице
+                Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail("Шрифт меньше, а должен быть больше");
+            }
+
+        }
+        
+        int[] RGBtoINT(string rgb)
+        {
+            string RGB = rgb.Substring(5, rgb.Length-9);
+            int[] dim = new int[3];
+            for (int i = 0; i < RGB.Split(',').Length; i++)
+            {
+                dim[i] = Convert.ToInt16(RGB.Split(',')[i]);
+            }
+
+            return dim;
+        }
+         
+
 
 		[TearDown]
         public void stop()
