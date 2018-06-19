@@ -59,11 +59,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="app\Application.cs" />
     <Compile Include="MyTestEvents.cs" />
     <Compile Include="MyTests.cs" />
     <Compile Include="MyTestsFireFox.cs" />
     <Compile Include="MyTestsIE.cs" />
+    <Compile Include="pages\Page.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="tests\TestBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
