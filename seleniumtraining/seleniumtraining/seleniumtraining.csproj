@@ -64,7 +64,10 @@
     <Compile Include="MyTests.cs" />
     <Compile Include="MyTestsFireFox.cs" />
     <Compile Include="MyTestsIE.cs" />
+    <Compile Include="pages\CheckoutPage.cs" />
+    <Compile Include="pages\MainPage.cs" />
     <Compile Include="pages\Page.cs" />
+    <Compile Include="pages\ProductPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="tests\TestBase.cs" />
   </ItemGroup>
