@@ -9,5 +9,16 @@ namespace seleniumtraining
         {
 
         }
+
+       internal void Open()
+       {
+           driver.Url = "http://localhost/litecart";
+       }
+
+       internal void FindAndClickDuck(string duckname)
+       {
+           string selector = $"img.image[alt='{duckname}']";
+           driver.FindElement(By.CssSelector(selector)).Click();
+       }
     }
 }

@@ -69,6 +69,7 @@
     <Compile Include="pages\Page.cs" />
     <Compile Include="pages\ProductPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="tests\AddToCartPageObject.cs" />
     <Compile Include="tests\TestBase.cs" />
   </ItemGroup>
   <ItemGroup>

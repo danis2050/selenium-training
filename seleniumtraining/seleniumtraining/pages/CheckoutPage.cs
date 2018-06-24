@@ -2,7 +2,7 @@
 using OpenQA.Selenium;
 
 
-namespace seleniumtraining.pages
+namespace seleniumtraining
 {
     internal class CheckoutPage
     {
