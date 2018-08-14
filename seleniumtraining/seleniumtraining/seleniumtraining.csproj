@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="app\Application.cs" />
+    <Compile Include="GoldTests.cs" />
     <Compile Include="MyTestEvents.cs" />
     <Compile Include="MyTests.cs" />
     <Compile Include="MyTestsFireFox.cs" />
